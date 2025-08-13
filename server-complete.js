@@ -37,6 +37,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://frontend-qefwepww7-sobreiras-projects.vercel.app',
+  'https://frontend-lkspe4tgf-sobreiras-projects.vercel.app',
   /https:\/\/(frontend|planner)-[a-z0-9-]+-sobreiras-projects\.vercel\.app/
 ];
 
