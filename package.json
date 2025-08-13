@@ -1,0 +1,30 @@
+{
+  "name": "planner-pro-backend-clean",
+  "version": "1.0.0",
+  "description": "Backend limpo para Planner Pro",
+  "main": "server-complete.js",
+  "scripts": {
+    "start": "node server-complete.js",
+    "dev": "nodemon server-complete.js",
+    "setup": "node setup-database.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "express-validator": "^7.0.1",
+    "@prisma/client": "^5.7.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "prisma": "^5.7.1"
+  },
+  "keywords": ["planner", "backend", "api"],
+  "author": "Planner Pro",
+  "license": "MIT"
+}

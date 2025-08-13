@@ -1,0 +1,182 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String             @id @default(cuid())
+  email             String             @unique
+  password          String
+  name              String?
+  googleId          String?            @unique
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  
+  // Relations
+  projects          Project[]
+  goals             Goal[]
+  finances          Finance[]
+  financialPlanning FinancialPlanning[]
+  travels           Travel[]
+  careerItems       CareerItem[]
+  calendarEvents    CalendarEvent[]
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("pending")
+  priority    String   @default("medium")
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("projects")
+}
+
+model Goal {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  targetDate  DateTime?
+  status      String    @default("pending")
+  priority    String    @default("medium")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subGoals    SubGoal[]
+  
+  @@map("goals")
+}
+
+model SubGoal {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  goalId      String
+  goal        Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  
+  @@map("sub_goals")
+}
+
+model Finance {
+  id          String   @id @default(cuid())
+  description String
+  amount      Float
+  type        String   // "income" or "expense"
+  category    String?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("finances")
+}
+
+model FinancialPlanning {
+  id          String   @id @default(cuid())
+  mes         String   // Format: "YYYY-MM"
+  rendaDev    Float    @default(0)
+  rendaContab Float    @default(0)
+  freelas     Float    @default(0)
+  rendaTotal  Float    @default(0)
+  gastos      Float    @default(0)
+  aporte      Float    @default(0)
+  saldoAcum   Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([mes, userId])
+  @@map("financial_planning")
+}
+
+model Travel {
+  id          String   @id @default(cuid())
+  semana      Int
+  inicio      String
+  fim         String
+  cidade      String
+  pais        String
+  zona        String
+  hospedagem  Float    @default(0)
+  alimentacao Float    @default(0)
+  transporte  Float    @default(0)
+  academia    Float    @default(0)
+  suplementos Float    @default(0)
+  atividades  Float    @default(0)
+  total       Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("travels")
+}
+
+model CareerItem {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  company     String?
+  position    String?
+  startDate   DateTime?
+  endDate     DateTime?
+  status      String   @default("planned")
+  priority    String   @default("medium")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("career_items")
+}
+
+model CalendarEvent {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  type        String   @default("event")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("calendar_events")
+}
