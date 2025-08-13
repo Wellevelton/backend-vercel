@@ -33,29 +33,8 @@ try {
 const PORT = process.env.PORT || 3001;
 
 // ==================== CORS CONFIGURADO CORRETAMENTE ====================
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://frontend-qefwepww7-sobreiras-projects.vercel.app',
-  'https://frontend-lkspe4tgf-sobreiras-projects.vercel.app',
-  /https:\/\/(frontend|planner)-[a-z0-9-]+-sobreiras-projects\.vercel\.app/
-];
-
 const corsOptions = {
-  origin(origin, callback) {
-    if (!origin) return callback(null, true);
-    
-    const isAllowed = allowedOrigins.some(allowed => 
-      allowed instanceof RegExp ? allowed.test(origin) : allowed === origin
-    );
-    
-    if (isAllowed) {
-      callback(null, true);
-    } else {
-      console.log('CORS blocked origin:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true, // Aceita qualquer origem
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
