@@ -14,10 +14,5 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "server-complete.js": {
-      "maxDuration": 30
-    }
   }
 }
